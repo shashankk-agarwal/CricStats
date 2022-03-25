@@ -1,3 +1,11 @@
-import express from 'express';
-const app = express();
-app.set('view engine', ejs);
+const express = require('express')
+const cors = require('cors')
+const { router: queryRouter} = require('./routes/index')
+const app = express()
+const port = 3000
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use('/query', queryRouter)
+app.set('view engine', 'ejs')
+app.listen(port, () => {console.log('server up and running')})

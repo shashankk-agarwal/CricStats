@@ -1,0 +1,10 @@
+const { Router } = require('express')
+const { query1, query2, query3, query4, query5, query6 } = require('./queries')
+const router = new Router()
+router.post('/1', query1)
+router.post('/2', query2)
+router.post('/3', query3)
+router.post('/4', query4)
+router.post('/5', query5)
+router.post('/6', query6)
+module.exports = {router}
