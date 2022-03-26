@@ -1,11 +1,7 @@
-const { dBPool } = require('../services/db')
 module.exports = {
     query1: (req, res) => {
         console.log("Q1")
-        dBPool.query('SELECT * FROM Sample', (error, results, fields) => {
-            console.log({results})
-        })
-        res.send('Q1')
+        res.render('query1.ejs', {})
     },
     query2: (req, res) => {
         console.log("Q2")

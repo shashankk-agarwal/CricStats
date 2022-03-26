@@ -1,0 +1,28 @@
+<%- include('partials/head') %>
+<body>
+    <script>
+        redirect_query = (n) => window.location.href = String(window.location.href).concat("query/", String(n))
+    </script>
+    <%- include('partials/header') %>
+    <div class="container mt-5 col-6">
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(1)">Batsman vs Bowler</button>
+        </div>
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(2)">Query Type 2</button>
+        </div>
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(3)">Query Type 3</button>
+        </div>
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(4)">Query Type 4</button>
+        </div>
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(5)">Query Type 5</button>
+        </div>
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(6)">Query Type 6</button>
+        </div>
+    </div>
+    <!-- <%- include('partials/footer') %> -->
+</body>
