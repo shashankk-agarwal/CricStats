@@ -5,7 +5,7 @@ module.exports = {
     },
     query2: (req, res) => {
         console.log("Q2")
-        res.send('Q2')
+        res.render('query2.ejs', {attributes: ['fours', 'sixes']})
     },
     query3: (req, res) => {
         console.log("Q3")
