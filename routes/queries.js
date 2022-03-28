@@ -9,11 +9,11 @@ module.exports = {
     },
     query3: (req, res) => {
         console.log("Q3")
-        res.send('Q3')
+        res.render('query3.ejs', {attributes: ['fours', 'sixes']})
     },
     query4: (req, res) => {
         console.log("Q4")
-        res.send('Q4')
+        res.render('query4.ejs', {})
     },
     query5: (req, res) => {
         console.log("Q5")

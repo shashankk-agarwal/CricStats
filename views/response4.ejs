@@ -1,0 +1,15 @@
+<%- include('partials/head') %>
+<body>
+    <%- include('partials/header') %>
+    <div class="container mt-5 col-5">
+        <div class="card bg-light">
+            <div class="card-header text-center"><%= String(player1) + " vs " + String(player2) %> </div>
+            <ul class="list-group list-group-flush">
+                <% Object.keys(stats).forEach((key) => { %>
+                    <li class="list-group-item text-center"><%= String(key) + ": " + String(stats[key]) %></li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+    <!-- <%- include('partials/footer') %> -->
+</body>
