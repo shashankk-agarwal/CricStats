@@ -2,7 +2,7 @@ const { dBPool } = require('../services/db')
 module.exports = {
     searchPlayers: (req, res) => {
         // console.log(req.query)
-        dBPool.query('SELECT * FROM Sample', (error, results, fields) => {
+        dBPool.query('SELECT * FROM balls LIMIT 10', (error, results, fields) => {
             // console.log({results, fields})
             res.json(results)
         })
@@ -16,8 +16,8 @@ module.exports = {
         })
     },
     response1: (req, res) => {
-        dBPool.query('SELECT * FROM Sample', (error, results, fields) => {
-            console.log({results}, req.body)
+        dBPool.query('SELECT * FROM balls LIMIT 10', (error, results, fields) => {
+            // console.log({results}, req.body)
             results = [{Season: 2011, Batter: "Kohli", Bowler: "Bumrah", Wickets: 3, Runs: 220}, {Season: 2023, Batter: "Kohli", Bowler: "Bumrah", Wickets: 2, Runs: 520}]
             const stats = results.map((result) => {
                 const { Batter, Bowler, ...stat } = result

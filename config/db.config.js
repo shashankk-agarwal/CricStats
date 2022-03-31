@@ -1,8 +1,8 @@
 module.exports = {
     dBConfig: {
         host: 'localhost',
-        user: 'cricstats',
+        user: 'cricstatsadmin',
         password: 'duckeeee',
-        database: 'cricstats'
+        database: 'cricdata'
     }
 }
