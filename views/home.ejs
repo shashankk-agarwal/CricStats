@@ -1,7 +1,7 @@
 <%- include('partials/head') %>
 <body>
     <script>
-        redirect_query = (n) => window.location.href = String(window.location.href).concat("query/", String(n))
+        redirect_query = (n) => window.location.href = String(window.location.href).concat("query/", String(n));
     </script>
     <%- include('partials/header') %>
     <div class="container mt-5 col-6">
@@ -9,19 +9,31 @@
             <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(1)">Batsman vs Bowler</button>
         </div>
         <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(4)">Player Comparison</button>
+        </div>
+        <!-- <div class="row mb-4">
             <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(2)">Players by Stats</button>
         </div>
         <div class="row mb-4">
             <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(3)">Teams by Stats</button>
+        </div> -->
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(5)">Team Stats by Season</button>
         </div>
         <div class="row mb-4">
-            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(4)">Player Comparison</button>
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(6)">Team Stats by Match</button>
         </div>
         <div class="row mb-4">
-            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(5)">Query Type 5</button>
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(7)">Batting Stats by Season</button>
         </div>
         <div class="row mb-4">
-            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(6)">Query Type 6</button>
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(8)">Batting Stats by Match</button>
+        </div>
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(9)">Bowling Stats by Season</button>
+        </div>
+        <div class="row mb-4">
+            <button type="submit" class="btn btn-secondary btn-lg btn-block" onclick="redirect_query(10)">Bowling Stats by Match</button>
         </div>
     </div>
     <!-- <%- include('partials/footer') %> -->
