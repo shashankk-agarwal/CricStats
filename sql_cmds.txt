@@ -1,5 +1,5 @@
 CREATE TABLE teams
-(team_id int, team_name varchar(40), primary key (team_id));
+(team_id int, team_name varchar(40) not null, primary key (team_id));
 
 LOAD DATA INFILE 'Team.csv'
 INTO TABLE teams
@@ -10,7 +10,7 @@ IGNORE 1 rows
 (@dummy, team_id, team_name);
 
 CREATE TABLE players
-(player_id int, player_name varchar(40), dob varchar(20), batting_hand varchar(40), bowling_skill varchar(40), country_name varchar(20), primary key (player_id), unique(player_name));
+(player_id int, player_name varchar(40) not null, batting_hand varchar(40), bowling_skill varchar(40), country_name varchar(20), primary key (player_id), unique(player_name));
 
 LOAD DATA INFILE '/var/lib/mysql-files/Player.csv'
 INTO TABLE players
@@ -18,10 +18,10 @@ FIELDS terminated by ','
 OPTIONALLY enclosed by '"'
 LINES terminated by '\r\n'
 IGNORE 1 rows
-(@dummy, player_id, player_name, dob, batting_hand, bowling_skill, country_name);
+(@dummy, player_id, player_name, @dummy, batting_hand, bowling_skill, country_name);
 
 CREATE TABLE matches
-(match_id int, team_name_1 varchar(40), team_name_2 varchar(40), match_date varchar(20), season varchar(4), venue varchar(75), toss_winner varchar(40), match_winner varchar(40), toss_name varchar(10), win_type varchar(10), outcome_type varchar(10), motm varchar(40), win_margin int, primary key (match_id));
+(match_id int, team_name_1 varchar(40) not null, team_name_2 varchar(40) not null, match_date varchar(20), season year not null, venue varchar(75), toss_winner varchar(40), match_winner varchar(40), toss_name varchar(10), win_type varchar(10), outcome_type varchar(10), motm varchar(40), win_margin int, primary key (match_id));
 
 LOAD DATA INFILE '/var/lib/mysql-files/Match.csv'
 INTO TABLE matches
@@ -32,7 +32,7 @@ IGNORE 1 rows
 (@dummy, match_id, team_name_1, team_name_2, match_date, season, venue, @dummy, @dummy, toss_winner, match_winner, toss_name, win_type, outcome_type, motm, win_margin, @dummy);
 
 CREATE TABLE player_match
-(match_id int, player_id int, player_name varchar(40), player_role varchar(20), player_team varchar(40), opposite_team varchar(40), primary key (match_id, player_id), unique(match_id, player_name));
+(match_id int, player_id int, player_name varchar(40) not null, player_role varchar(20) not null, player_team varchar(40) not null, opposite_team varchar(40) not null, primary key (match_id, player_id), unique(match_id, player_name));
 
 LOAD DATA INFILE '/var/lib/mysql-files/Player_match.csv'
 INTO TABLE player_match
@@ -43,7 +43,7 @@ IGNORE 1 rows
 (@dummy, @dummy, match_id, player_id, player_name, @dummy, @dummy, @dummy, @dummy, player_role, player_team, opposite_team, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy);
 
 CREATE TABLE balls
-(match_id int, over_id int, ball_id int, innings_no int, team_batting int, team_bowling int, striker_position int, extra_type varchar(15), runs_scored int, extra_runs int, out_type varchar(30), match_date varchar(20), season varchar(4), striker int, nonstriker int, bowler int, player_out int, fielder int, primary key (match_id, over_id, ball_id, innings_no));
+(match_id int, over_id int, ball_id int, innings_no int, team_batting int not null, team_bowling int not null, striker_position int, extra_type varchar(15), runs_scored int, extra_runs int, out_type varchar(30), match_date varchar(20), season varchar(4), striker int, nonstriker int, bowler int, player_out int, fielder int, primary key (match_id, over_id, ball_id, innings_no));
 
 LOAD DATA INFILE '/var/lib/mysql-files/Balls_cleaned.csv'
 INTO TABLE balls
@@ -102,3 +102,7 @@ ALTER TABLE balls ADD foreign key (match_id, striker) REFERENCES player_match(ma
 ALTER TABLE balls ADD foreign key (match_id, nonstriker) REFERENCES player_match(match_id, player_id);
 
 ALTER TABLE balls ADD foreign key (match_id, bowler) REFERENCES player_match(match_id, player_id);
+
+ALTER TABLE balls DROP column match_date;
+
+ALTER TABLE balls DROP column season;
