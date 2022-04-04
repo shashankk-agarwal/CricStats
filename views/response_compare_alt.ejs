@@ -1,0 +1,34 @@
+<%- include('partials/head') %>
+<body>
+    <%- include('partials/header') %>
+    <div class="container mt-5 col-5">
+        <h5 class="text-center"><%= String(p1) + " vs " + String(p2) + " - Batting Stats" %></h6>
+        <div class="card bg-light">
+            <% stats_bat.forEach(stat => { %>
+                <div class="card-header text-center">Season: <%= String(stat['Season1']) %> </div>
+                <ul class="list-group list-group-flush">
+                    <% headers_bat.forEach((key) => { %>
+                        <% if ('Season' != key) { %>
+                            <li class="list-group-item text-center"><%= String(key) + ": " + String(stat[key + '1']) + " vs " + String(stat[key + '2']) %></li>
+                        <% } %>
+                    <% }) %>
+                </ul>
+            <% }) %>
+        </div>
+        <br>
+        <h5 class="text-center"><%= String(p1) + " vs " + String(p2) + " - Bowling Stats" %></h6>
+        <div class="card bg-light">
+            <% stats_ball.forEach(stat => { %>
+                <div class="card-header text-center">Season: <%= String(stat['Season1']) %> </div>
+                <ul class="list-group list-group-flush">
+                    <% headers_ball.forEach((key) => { %>
+                        <% if ('Season' != key) { %>
+                            <li class="list-group-item text-center"><%= String(key) + ": " + String(stat[key + '1']) + " vs " + String(stat[key + '2']) %></li>
+                        <% } %>
+                    <% }) %>
+                </ul>
+            <% }) %>
+        </div>
+    </div>
+    <!-- <%- include('partials/footer') %> -->
+</body>

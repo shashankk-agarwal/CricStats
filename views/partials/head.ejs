@@ -13,10 +13,9 @@
             fetch('http://localhost:3000/response/search?' + new URLSearchParams({queryString: queryString}), {method: 'GET'})
             .then(res => res.json())
             .then(data => {
-                console.log(data, outId)
                 $('#'.concat(outId)).empty()
                 data.forEach(x => {
-                    $(`<div class="card-body px-3"><input class="form-check-input" type="radio" required name="`.concat(String(outId), `" value="`.concat(String(x.x), `"><label class="form-check-label px-3">`.concat(String(x.x), String(x.y), `</label></div>`)))).appendTo('#'.concat(outId))
+                    $(`<div class="card-body px-3"><input class="form-check-input" type="radio" required name="`.concat(String(outId), `" value="`.concat(String(x.player_id), `"><label class="form-check-label px-3">`.concat(String(x.player_name), `</label></div>`)))).appendTo('#'.concat(outId))
                 });
             })
         }
@@ -24,7 +23,6 @@
             fetch('http://localhost:3000/response/searchTeam', {method: 'GET'})
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 $('#'.concat(outId)).empty()
                 data.forEach(x => {
                     $(`<li><a class="dropdown-item" href="/response/` + n + `?` + new URLSearchParams({teamid: x.team_id}) + `">` + String(x.team_name) + `</a></li>`).appendTo('#'.concat(outId))
