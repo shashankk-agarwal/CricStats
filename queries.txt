@@ -1,17 +1,15 @@
 Q1
-SELECT batsman, F1.season, team, Innings, RunsScored, BallsFaced, dismissals, (RunsScored*100)/BallsFaced as StrikeRate, (RunsScored)/dismissals as Average FROM 
-(SELECT batsman, season, team_batting as team, SUM(runs_scored) as RunsScored FROM (SELECT T2.season, T1.batsman, T1.team_batting, T1.runs_scored FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.batsman = "MS Dhoni") as T3 GROUP BY season) AS F1 INNER JOIN
-(SELECT season, COUNT(player_out) as dismissals FROM (SELECT T2.season, T1.player_out FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.player_out = "MS Dhoni") as T3 GROUP BY season) AS F2 INNER JOIN
-(SELECT season, COUNT(bowler_extras) as BallsFaced FROM (SELECT T2.season, T1.bowler_extras FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.batsman = "MS Dhoni" AND T1.bowler_extras = 0) as T3 GROUP BY season) AS F3 INNER JOIN
-(SELECT season, COUNT(match_id) as Innings FROM (SELECT DISTINCT T2.season, T1.match_id FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.batsman = "MS Dhoni") as T3 GROUP BY season) AS F4 ON F1.season=F2.season AND F2.season=F3.season AND F3.season=F4.season ORDER BY season ;
-
+SELECT batsman as Batsman, F1.season as Season, team as Team, Innings, RunsScored, BallsFaced, dismissals as Dismissals, (RunsScored*100)/BallsFaced as StrikeRate, (RunsScored)/dismissals as Average FROM 
+(SELECT batsman, season, any_value(team_name) as team, SUM(runs_scored) as RunsScored FROM (SELECT T2.season, T4.player_name as batsman, T3.team_name, T1.runs_scored FROM balls as T1 INNER JOIN matches as T2 inner join teams as T3 inner join players as T4 ON T3.team_id = T1.team_batting and T1.match_id = T2.match_id AND T1.striker = 20 and T1.striker = T4.player_id) as T3 GROUP BY season) AS F1 INNER JOIN
+(SELECT season, COUNT(*) as dismissals FROM (SELECT T2.season, T1.player_out FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.player_out = 20) as T3 GROUP BY season) AS F2 INNER JOIN
+(SELECT season, COUNT(*) as BallsFaced FROM (SELECT T2.season, T1.bowler_extras FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.striker = 20 AND T1.bowler_extras = 0) as T3 GROUP BY season) AS F3 INNER JOIN
+(SELECT season, COUNT(match_id) as Innings FROM (SELECT DISTINCT T2.season, T1.match_id FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.striker = 20) as T3 GROUP BY season) AS F4 ON F1.season = F2.season AND F2.season = F3.season AND F3.season = F4.season ORDER BY season;
 
 Q2
-SELECT batsman, F1.match_id, team, RunsScored, BallsFaced, isDismissed, (RunsScored*100)/BallsFaced as StrikeRate FROM 
-(SELECT batsman, match_id, team_batting as team, SUM(runs_scored) as RunsScored FROM (SELECT T1.match_id, T1.batsman, T1.team_batting, T1.runs_scored FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.batsman = "MS Dhoni" AND T2.season = "2008") as T3 GROUP BY match_id) AS F1 INNER JOIN
-(SELECT match_id, COUNT(bowler_extras) as BallsFaced FROM (SELECT T1.match_id, T1.bowler_extras FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.batsman = "MS Dhoni" AND T1.bowler_extras = 0 AND T2.season = "2008") as T3 GROUP BY match_id) AS F2 ON F1.match_id=F2.match_id LEFT JOIN
-(SELECT match_id, COUNT(player_out) as isDismissed FROM (SELECT T1.match_id, T1.player_out FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.player_out = "MS Dhoni" AND T2.season = "2008") as T3 GROUP BY match_id) AS F3 ON F2.match_id = F3.match_id ORDER BY match_id ;
-
+SELECT season, batsman as Batsman, F1.match_id as Match_ID, team as Team, opp as Opponent, RunsScored, BallsFaced, ifnull(isDismissed, 0) as IsDismissed, (RunsScored*100)/BallsFaced as StrikeRate FROM 
+(SELECT season, batsman, match_id, any_value(team_name) as team, any_value(opponent) as opp, SUM(runs_scored) as RunsScored FROM (SELECT T2.season, T1.match_id, T3.player_name as batsman, T4.team_name, T5.team_name as opponent, T1.runs_scored FROM balls as T1 INNER JOIN matches as T2 inner join players as T3 inner join teams as T4 inner join teams as T5 ON T5.team_id = T1.team_bowling and T4.team_id = T1.team_batting and T3.player_id = T1.striker and T1.match_id = T2.match_id AND T1.striker = 20) as T3 GROUP BY match_id) AS F1 INNER JOIN
+(SELECT match_id, COUNT(*) as BallsFaced FROM (SELECT T1.match_id, T1.bowler_extras FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.striker = 20 AND T1.bowler_extras = 0) as T3 GROUP BY match_id) AS F2 ON F1.match_id = F2.match_id LEFT JOIN
+(SELECT match_id, COUNT(player_out) as isDismissed FROM (SELECT T1.match_id, T1.player_out FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.player_out = 20) as T3 GROUP BY match_id) AS F3 ON F2.match_id = F3.match_id ORDER BY match_id ;
 
 Q3
 SELECT bowler, F1.season, team, Innings, WicketsTaken, RunsGiven, BallsBowled, BallsBowled/WicketsTaken as StrikeRate, RunsGiven/WicketsTaken as Average, (RunsGiven*6)/BallsBowled as Economy FROM 
@@ -35,7 +33,6 @@ SELECT fielder, F5.season, team, TotalDismissals, Catches, Stumpings, Runouts FR
 (SELECT season, COUNT(fielder) as Stumpings FROM (SELECT T2.season, T1.fielder, T1.team_bowling FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.fielder = "MS Dhoni" AND T1.dismissal_kind = "stumped") as T3 GROUP BY season) AS F4 ON F3.season=F4.season) AS F5 LEFT JOIN 
 (SELECT season, COUNT(fielder) as Runouts FROM (SELECT T2.season, T1.fielder, T1.team_bowling FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id=T2.id AND T1.fielder = "MS Dhoni" AND T1.dismissal_kind = "run out") as T3 GROUP BY season) AS F6 ON F5.season=F6.season ORDER BY season ;
 
-
 Q6
 SELECT team, F1.season AS Season, MatchesPlayed, MatchesWon, MatchesLost, RunsScored, WicketsTaken, HighestTotalScore, max_win_runs AS BiggestVictoryByRuns, max_win_wick AS BiggestVictoryByWickets, max_loss_runs AS BiggestDefeatByRuns, max_loss_wick AS BiggestDefeatByWickets FROM
 (SELECT T3.team_name AS team, T2.season, SUM(runs_scored) + SUM(extra_runs) AS RunsScored FROM balls as T1 INNER JOIN matches as T2 inner join teams as T3 ON T1.match_id = T2.match_id and T3.team_id = T1.team_batting AND T1.team_batting = 3 GROUP BY season) AS F1 INNER JOIN 
@@ -51,7 +48,6 @@ Q7
 SELECT season, F1.match_id, team, opposition_team, RunsScored, WicketsUsed, RunsConceded, WicketsTaken, Winner = team AS IsWon, Toss = team AS TossWon FROM
 (SELECT T2.season, T1.match_id, T3.team_name AS team, T4.team_name AS opposition_team, SUM(runs_scored) + SUM(extra_runs) AS RunsScored, COUNT(player_out) AS WicketsUsed, T2.match_winner as Winner, T2.toss_winner as Toss FROM balls as T1 INNER JOIN matches as T2 inner join teams as T3 inner join teams as T4 ON T1.match_id = T2.match_id and T3.team_id = T1.team_batting and T4.team_id = T1.team_bowling AND T1.team_batting = 3 GROUP BY match_id, team, opposition_team) AS F1 INNER JOIN
 (SELECT T1.match_id, SUM(runs_scored) + SUM(extra_runs) AS RunsConceded, COUNT(player_out) AS WicketsTaken FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.team_bowling = 3 GROUP BY match_id) AS F2 ON F1.match_id = F2.match_id ORDER BY match_id ;
-
 
 Q8
 SELECT FT1.season, FT1.batsman, FT1.team, FT1.RunsScored, FT1.BallsFaced, FT1.Dismissals, FT1.StrikeRate, FT1.Average, FT2.batsman, FT2.team, FT2.RunsScored, FT2.BallsFaced, FT2.dismissals, FT2.StrikeRate, FT2.Average FROM
