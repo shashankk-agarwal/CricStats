@@ -106,7 +106,6 @@ module.exports = {
                 const { Batsman, ...stat } = result
                 return stat
             })
-            console.log({stats})
             res.render('response_stats.ejs', {stats, name: results[0]['Batsman']});
         })
     },
@@ -124,27 +123,30 @@ module.exports = {
         })
     },
     response9: (req, res) => {
-        dBPool.query('SELECT * FROM Sample', (error, results, fields) => {
-            console.log({results}, req.body)
-            results = [{Player: "Bumrah", Season: 2011, "Wickets": 24, "Runs Conceded": 450}, {Player: "Bumrah", Season: 2014, "Runs Conceded": 311, "Wickets": 21}]
+        let { "Bowler-res": p1 } = req.body;
+        dBPool.query(`SELECT bowler as Bowler, F1.season as Season, team as Team, Innings, WicketsTaken, RunsGiven as RunsConceded, BallsBowled, BallsBowled/WicketsTaken as StrikeRate, RunsGiven/WicketsTaken as Average, (RunsGiven*6)/BallsBowled as Economy FROM 
+        (SELECT bowler, season, any_value(team_name) as team, SUM(runs_scored) + SUM(bowler_extras) as RunsGiven FROM (SELECT T2.season, T4.player_name as bowler, T3.team_name, T1.runs_scored, T1.bowler_extras FROM balls as T1 INNER JOIN matches as T2 inner join teams as T3 inner join players as T4 ON T3.team_id = T1.team_bowling and T1.match_id = T2.match_id AND T1.bowler = ` + String(p1) + ` and T1.bowler = T4.player_id) as T3 GROUP BY season) as F1 INNER JOIN 
+        (SELECT season, SUM(bowler_wicket) as WicketsTaken FROM (SELECT T2.season, T1.bowler_wicket FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.bowler = ` + String(p1) + `) as T3 GROUP BY season) AS F2 INNER JOIN 
+        (SELECT season, COUNT(ball_id) as BallsBowled FROM (SELECT T2.season, T1.ball_id FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.bowler = ` + String(p1) + ` AND T1.bowler_extras = 0) as T3 GROUP BY season) AS F3 INNER JOIN 
+        (SELECT season, COUNT(match_id) as Innings FROM (SELECT DISTINCT T2.season, T1.match_id FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.bowler = ` + String(p1) + `) as T3 GROUP BY season) AS F4 ON F1.season = F2.season AND F2.season = F3.season AND F3.season = F4.season ORDER BY season;`, (error, results, fields) => {
             const stats = results.map((result) => {
-                const { Player, ...stat } = result
+                const { Bowler, ...stat } = result
                 return stat
             })
-            console.log({stats})
-            res.render('response_stats.ejs', {stats, name: results[0]['Player']});
+            res.render('response_stats.ejs', {stats, name: results[0]['Bowler']});
         })
     },
     response10: (req, res) => {
-        dBPool.query('SELECT * FROM Sample', (error, results, fields) => {
-            console.log({results})
-            results = [{Season: 2011, Wickets: 3, Team: "RCB", MOTM: "Yes", "Player": "Bumrah"}, {Season: 2011, Wickets: 0, Team: "RCB", MOTM: "No", "Player": "Bumrah"}, {Season: 2013, Wickets: 4, Team: "KKR", MOTM: "No", "Player": "Bumrah"}]
-            fields = [{name: "Season"}, {name: "Wickets"}, {name: "Team"}, {name: "MOTM"}, {name: "Player"}]
+        let { "Bowler-res": p1 } = req.body;
+        dBPool.query(`SELECT season as Season, bowler as Bowler, F1.match_id as Match_ID, team as Team, opp as Opponent, RunsGiven as RunsConceded, BallsBowled, WicketsTaken, (RunsGiven*6)/BallsBowled as Economy FROM 
+        (SELECT season, bowler, match_id, any_value(team_name) as team, any_value(opponent) as opp, SUM(runs_scored) + SUM(bowler_extras) as RunsGiven FROM (SELECT T2.season, T1.match_id, T3.player_name as bowler, T4.team_name, T5.team_name as opponent, T1.runs_scored, T1.bowler_extras FROM balls as T1 INNER JOIN matches as T2 inner join players as T3 inner join teams as T4 inner join teams as T5 ON T4.team_id = T1.team_bowling and T5.team_id = T1.team_batting and T3.player_id = T1.bowler and T1.match_id = T2.match_id AND T1.bowler = ` + String(p1) + `) as T3 GROUP BY match_id) as F1 INNER JOIN 
+        (SELECT match_id, COUNT(ball_id) as BallsBowled FROM (SELECT T1.match_id, T1.ball_id FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.bowler = ` + String(p1) + ` AND T1.bowler_extras = 0) as T3 GROUP BY match_id) AS F2 ON F1.match_id = F2.match_id LEFT JOIN 
+        (SELECT match_id, SUM(bowler_wicket) as WicketsTaken FROM (SELECT T1.match_id, T1.bowler_wicket FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.bowler = ` + String(p1) + `) as T3 GROUP BY match_id) AS F3 ON F2.match_id = F3.match_id ORDER BY match_id;`, (error, results, fields) => {
             const stats = results.map((result) => {
-                const { Player, ...stat } = result
+                const { Bowler, ...stat } = result
                 return stat
             })
-            res.render('response_table.ejs', {name: results[0]['Player'], stats, headers: fields.map((field) => field.name).filter(name => name != "Player")});
+            res.render('response_table.ejs', {name: results[0]['Bowler'], stats, headers: fields.map((field) => field.name).filter(name => name != "Bowler")});
         })
     },
 }
