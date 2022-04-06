@@ -15,6 +15,10 @@ module.exports = {
         console.log("Q4")
         res.render('query_compare.ejs', {p1: "Player-1", p2: "Player-2", n: 4})
     },
+    query40: (req, res) => {
+        console.log("Q40")
+        res.render('query_compare.ejs', {p1: "Player-1", p2: "Player-2", n: 40})
+    },
     query5: (req, res) => {
         console.log("Q5")
         res.render('query_team.ejs', {n: 5})

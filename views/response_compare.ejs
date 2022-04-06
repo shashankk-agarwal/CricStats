@@ -1,20 +1,27 @@
 <%- include('partials/head') %>
 <body>
     <%- include('partials/header') %>
-    <div class="container mt-5 col-5">
-        <h6 class="text-center"><%= String(p1) + " vs " + String(p2) %></h6>
-        <div class="card bg-light">
-            <% stats.forEach(stat => { %>
-                <div class="card-header text-center">Season: <%= String(stat['Season']) %> </div>
-                <ul class="list-group list-group-flush">
-                    <% Object.keys(stat).forEach((key) => { %>
-                        <% if ('Season' != key) { %>
-                            <li class="list-group-item text-center"><%= String(key) + ": " + String(stat[key]) %></li>
-                        <% } %>
+    <div class="container mt-5 col-8">
+        <h5 class="text-center"><%= String(p1) + " vs " + String(p2) %></h5>
+        <br>
+        <table class="table table-bordered text-center table-striped">
+            <thead>
+                <tr>
+                    <% headers.forEach(key => { %>
+                        <th scope="col"><%= String(key) %> </th>
                     <% }) %>
-                </ul>
-            <% }) %>
-        </div>
+                </tr>
+            </thead>
+            <tbody>
+                <% stats.forEach(stat => { %>
+                    <tr>
+                    <% headers.forEach(key => { %>
+                            <td><%= String(stat[key]) %> </td>
+                    <% }) %>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
     </div>
     <!-- <%- include('partials/footer') %> -->
 </body>
