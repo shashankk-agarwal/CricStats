@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <body>
-    <%- include('partials/header') %>
+    <%- include('partials/header', {home}) %>
     <div class="container mt-5 col-6">
         <h5 class="text-center"><%= String(p1) + " vs " + String(p2) + " - " + String(type) + " Stats" %></h6>
         <br>
@@ -14,7 +14,7 @@
             </thead>
             <tbody>
                 <% stats.forEach(stat => { %>
-                    <tr class="table-secondary">
+                    <tr class="table-danger">
                         <td colspan="3">Season: <%= String(stat['Season1']) %> </th>
                     </tr>
                     <% headers.forEach(key => { %>

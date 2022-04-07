@@ -1,10 +1,10 @@
 <%- include('partials/head') %>
 <body>
-    <%- include('partials/header') %>
+    <%- include('partials/header', {home}) %>
     <div class="container mt-5 col-15">
         <h5 class="text-center"><%= String(name) %> - Seasonwise Stats</h5>
         <br>
-        <table class="table table-bordered text-center table-striped">
+        <table class="table table-bordered text-center">
             <thead>
                 <tr>
                     <% Object.keys(stats[0]).forEach(key => { %>

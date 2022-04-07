@@ -1,9 +1,9 @@
 <%- include('partials/head') %>
 <body>
-    <%- include('partials/header') %>
+    <%- include('partials/header', {home}) %>
     <div class="container mt-5 col-6">
         <div class="dropdown row">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Choose Stat Attribute</button>
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Choose Stat Attribute</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <% attributes.forEach((attr) => { %>
                     <li><a class="dropdown-item" href="<%= `/response/2?` + new URLSearchParams({attr: attr}) %> "><%= attr %> </a></li>

@@ -1,10 +1,10 @@
 <%- include('partials/head') %>
 <body>
-    <%- include('partials/header') %>
+    <%- include('partials/header', {home}) %>
     <div class="container mt-5 col-8">
         <h5 class="text-center"><%= String(p1) + " vs " + String(p2) %></h5>
         <br>
-        <table class="table table-bordered text-center table-striped">
+        <table class="table table-bordered text-center">
             <thead>
                 <tr>
                     <% headers.forEach(key => { %>

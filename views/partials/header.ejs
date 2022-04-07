@@ -1,3 +1,22 @@
 <header>
-    <div class="h3 text-center mt-5 mb-4"><a href="/" class="link-dark" style="text-decoration:none;"><b>CricStats Home</b></a></div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger m-5 p-3">
+        <div class="container-fluid" style="font-size: large;">
+            <a class="navbar-brand" id="0" href="/">CricStats Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" id="1" href="/home/1">Top 10 Players</a>
+                    <a class="nav-link" id="2" href="/home/2">Player Comparisons</a>
+                    <a class="nav-link" id="3" href="/home/3">Player Stats</a>
+                    <a class="nav-link" id="4" href="/home/4">Team Stats</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <br>
 </header>
+<script>
+    document.getElementById('<%= home %>').setAttribute('class', document.getElementById('<%= home %>').getAttribute('class') + ' active');
+</script>

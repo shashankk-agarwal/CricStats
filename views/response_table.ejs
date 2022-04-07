@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 </head>
 <body>
-    <%- include('partials/header') %>
+    <%- include('partials/header', {home}) %>
     <div class="container mt-5">
         <h6 class="text-center"><%= String(name) %> - Matchwise Stats</h6>
         <script>
@@ -19,7 +19,7 @@
                 $('#stats-tab').DataTable();
             } );
         </script>
-        <table id="stats-tab" class="table table-striped m-4 text-center table-bordered" style="width:100%">
+        <table id="stats-tab" class="table m-4 text-center table-bordered" style="width:100%">
             <thead>
                 <tr>
                     <% headers.forEach(header => { %>
