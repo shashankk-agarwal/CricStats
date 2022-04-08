@@ -21,7 +21,7 @@
         </script>
         <table id="stats-tab" class="table m-4 text-center table-bordered" style="width:100%">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <% headers.forEach(header => { %>
                         <th><%= String(header) %> </th>
                     <% }) %>
@@ -50,8 +50,8 @@
             color: black!important;
         }
         .paginate_button.active > a {
-            background-color: gray!important;
-            border-color: gray!important;
+            background-color: red!important;
+            border-color: red!important;
             color: white!important;
         }
     </style>

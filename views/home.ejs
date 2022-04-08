@@ -4,6 +4,7 @@
         redirect_query = (n) => window.location.href = 'http://localhost:3000/'.concat("query/", String(n));
     </script>
     <%- include('partials/header', {home: String(home)}) %>
+    <br>
     <div class="container mt-5 col-4">
         <% buttons.forEach(button => { %>
             <div class="row mt-5">

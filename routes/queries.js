@@ -43,4 +43,8 @@ module.exports = {
         console.log("Q10")
         res.render('query_player.ejs', {n: 10, type: 'Bowler', home: 3})
     },
+    query11: (req, res) => {
+        console.log("Q7")
+        res.render('query_player.ejs', {n: 11, type: 'Fielder', home: 3})
+    }
 }

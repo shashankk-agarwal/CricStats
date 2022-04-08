@@ -260,4 +260,30 @@ module.exports = {
             res.render('response_table.ejs', {home: 3, name: results[0]['Bowler'], stats, headers: fields.map((field) => field.name).filter(name => name != "Bowler")});
         })
     },
+    response11: (req, res) => {
+        let { "Fielder-res": p1 } = req.body;
+        if(p1 === undefined) {
+            res.send("No player chosen")
+            return
+        }
+        dBPool.query(`SELECT F5.season as Season, fielder as Fielder, team as Team, ifnull(TotalDismissals, 0) as TotalDismissals, ifnull(Catches, 0) as Catches, ifnull(Stumpings, 0) as Stumpings, ifnull(Runouts, 0) as RunOuts FROM (SELECT fielder, F3.season, team, TotalDismissals, Catches, Stumpings FROM (SELECT fielder, F1.season, team, TotalDismissals, Catches FROM 
+        (SELECT fielder, season, any_value(team_name) as team, COUNT(fielder) as TotalDismissals FROM (SELECT T2.season, T3.player_name as fielder, T4.team_name FROM balls as T1 INNER JOIN matches as T2 inner join players as T3 inner join teams as T4 ON T3.player_id = T1.fielder and T4.team_id = T1.team_bowling and T1.match_id = T2.match_id AND T1.fielder = ` + String(p1) + `) as T3 GROUP BY season) AS F1 LEFT JOIN 
+        (SELECT season, COUNT(*) as Catches FROM (SELECT T2.season, T1.fielder, T1.team_bowling FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.fielder = ` + String(p1) + ` AND T1.out_type like "%ca%") as T3 GROUP BY season) AS F2 ON F1.season = F2.season) AS F3 LEFT JOIN 
+        (SELECT season, COUNT(*) as Stumpings FROM (SELECT T2.season, T1.fielder, T1.team_bowling FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.fielder = ` + String(p1) + ` AND T1.out_type = "stumped") as T3 GROUP BY season) AS F4 ON F3.season = F4.season) AS F5 LEFT JOIN 
+        (SELECT season, COUNT(*) as Runouts FROM (SELECT T2.season, T1.fielder, T1.team_bowling FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id AND T1.fielder = ` + String(p1) + ` AND T1.out_type = "run out") as T3 GROUP BY season) AS F6 ON F5.season = F6.season ORDER BY season;`, (error, results, fields) => {
+            if(error) {
+                res.send(error)
+                return
+            }
+            if(results.length === 0) {
+                res.send("No relevant results")
+                return
+            }
+            const stats = results.map((result) => {
+                const { Fielder, ...stat } = result
+                return stat
+            })
+            res.render('response_stats.ejs', {home: 3, stats, name: results[0]['Fielder']});
+        })
+    }
 }
