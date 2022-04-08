@@ -12,8 +12,17 @@
 </head>
 <body>
     <%- include('partials/header', {home}) %>
-    <div class="container mt-5">
-        <h6 class="text-center"><%= String(name) %> - Matchwise Stats</h6>
+    <div class="container mt-1">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-1 text-center">
+            <img src="http://localhost:3000/images/<%= img %>.jpg" class="rounded mx-auto d-block img-fluid h-20">
+            </div>
+            <div class="col-6">
+            <h4 class="text-center"><%= String(name) %> - Matchwise Stats</h4>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
         <script>
             $(document).ready(() => {
                 $('#stats-tab').DataTable();

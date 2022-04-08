@@ -73,7 +73,7 @@ module.exports = {
                 const { Batsman1, Batsman2, ...stat } = result
                 return stat
             })
-            res.render('response_compare_alt.ejs', {home: 2, headers: fields_bat.map((field) => String(field.name).substring(0, String(field.name).length - 1)).filter(name => name != "Batsman").filter((item, i, ar) => { return ar.indexOf(item) === i; }), stats: stats_bat, p1: results_bat[0]['Batsman1'], p2: results_bat[0]['Batsman2'], type: 'Batting'});
+            res.render('response_compare_alt.ejs', {img: 'batter', home: 2, headers: fields_bat.map((field) => String(field.name).substring(0, String(field.name).length - 1)).filter(name => name != "Batsman").filter((item, i, ar) => { return ar.indexOf(item) === i; }), stats: stats_bat, p1: results_bat[0]['Batsman1'], p2: results_bat[0]['Batsman2'], type: 'Batting'});
         })
     },
     response40: (req, res) => {
@@ -103,7 +103,7 @@ module.exports = {
                 const { Bowler1, Bowler2, ...stat } = result
                 return stat
             })
-            res.render('response_compare_alt.ejs', {home: 2, headers: fields_ball.map((field) => String(field.name).substring(0, String(field.name).length - 1)).filter(name => name != "Bowler").filter((item, i, ar) => { return ar.indexOf(item) === i; }), stats: stats_ball, p1: results_ball[0]['Bowler1'], p2: results_ball[0]['Bowler2'], type: 'Bowling'});
+            res.render('response_compare_alt.ejs', {img: 'bowler', home: 2, headers: fields_ball.map((field) => String(field.name).substring(0, String(field.name).length - 1)).filter(name => name != "Bowler").filter((item, i, ar) => { return ar.indexOf(item) === i; }), stats: stats_ball, p1: results_ball[0]['Bowler1'], p2: results_ball[0]['Bowler2'], type: 'Bowling'});
         })
     },
     response5: (req, res) => {
@@ -181,7 +181,7 @@ module.exports = {
                 const { Batsman, ...stat } = result
                 return stat
             })
-            res.render('response_stats.ejs', {home: 3, stats, name: results[0]['Batsman']});
+            res.render('response_stats.ejs', {img: 'batter', home: 3, stats, name: results[0]['Batsman']});
         })
     },
     response8: (req, res) => {
@@ -206,7 +206,7 @@ module.exports = {
                 const { Batsman, ...stat } = result
                 return stat
             })
-            res.render('response_table.ejs', {home: 3, name: results[0]['Batsman'], stats, headers: fields.map((field) => field.name).filter(name => name != "Batsman")});
+            res.render('response_table.ejs', {img: 'batter', home: 3, name: results[0]['Batsman'], stats, headers: fields.map((field) => field.name).filter(name => name != "Batsman")});
         })
     },
     response9: (req, res) => {
@@ -232,7 +232,7 @@ module.exports = {
                 const { Bowler, ...stat } = result
                 return stat
             })
-            res.render('response_stats.ejs', {home: 3, stats, name: results[0]['Bowler']});
+            res.render('response_stats.ejs', {img: 'bowler', home: 3, stats, name: results[0]['Bowler']});
         })
     },
     response10: (req, res) => {
@@ -257,7 +257,7 @@ module.exports = {
                 const { Bowler, ...stat } = result
                 return stat
             })
-            res.render('response_table.ejs', {home: 3, name: results[0]['Bowler'], stats, headers: fields.map((field) => field.name).filter(name => name != "Bowler")});
+            res.render('response_table.ejs', {img: 'bowler', home: 3, name: results[0]['Bowler'], stats, headers: fields.map((field) => field.name).filter(name => name != "Bowler")});
         })
     },
     response11: (req, res) => {
@@ -283,7 +283,7 @@ module.exports = {
                 const { Fielder, ...stat } = result
                 return stat
             })
-            res.render('response_stats.ejs', {home: 3, stats, name: results[0]['Fielder']});
+            res.render('response_stats.ejs', {img: 'fielder', home: 3, stats, name: results[0]['Fielder']});
         })
     }
 }

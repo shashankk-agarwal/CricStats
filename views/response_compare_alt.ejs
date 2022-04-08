@@ -1,8 +1,18 @@
 <%- include('partials/head') %>
 <body>
     <%- include('partials/header', {home}) %>
-    <div class="container mt-5 col-6">
-        <h5 class="text-center"><%= String(p1) + " vs " + String(p2) + " - " + String(type) + " Stats" %></h6>
+    <br>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-1 text-center">
+            <img src="http://localhost:3000/images/<%= img %>.jpg" class="rounded mx-auto d-block img-fluid h-20">
+            </div>
+            <div class="col-6">
+            <h4 class="text-center"><%= String(p1) + " vs " + String(p2) + " - " + String(type) + " Stats" %></h4>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4 col-6">
         <br>
         <table class="table table-bordered text-center">
             <thead>

@@ -6,6 +6,7 @@ const port = 3000
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(express.static('./assets'))
 app.use('/', homeRouter)
 app.use('/query', queryRouter)
 app.use('/response', responseRouter)
