@@ -133,7 +133,7 @@ module.exports = {
                 const { team, ...stat } = result
                 return stat
             })
-            res.render('response_stats.ejs', {home: 4, stats, name: results[0]['team']});
+            res.render('response_stats.ejs', {img: String(team), home: 4, stats, name: results[0]['team']});
         })
     },
     response6: (req, res) => {
@@ -155,7 +155,7 @@ module.exports = {
                 const { team, ...stat } = result
                 return stat
             })
-            res.render('response_table.ejs', {home: 4, name: results[0]['team'], stats, headers: fields.map((field) => field.name).filter(name => name != "team")});
+            res.render('response_table.ejs', {img: String(team), home: 4, name: results[0]['team'], stats, headers: fields.map((field) => field.name).filter(name => name != "team")});
         })
     },
     response7: (req, res) => {
