@@ -32,20 +32,6 @@ module.exports = {
             res.render('response_compare.ejs', {home: 2, headers: fields.map((field) => String(field.name)).filter(name => name !== 'Batter' && name !== 'Bowler' && name !== 'BatterAttr' && name !== 'BowlerAttr'), stats, p1: results[0]['Batter'] + " (" + results[0]['BatterAttr'] + ")", p2: results[0]['Bowler'] + " (" + results[0]['BowlerAttr'] + ")"});
         })
     },
-    // response2: (req, res) => {
-    //     console.log(req.query)
-    //     dBPool.query('SELECT * FROM Sample', (error, results, fields) => {
-    //         console.log({results})
-    //         res.render('response2.ejs', {players: results, headers: fields.map((field) => field.name)});
-    //     })
-    // },
-    // response3: (req, res) => {
-    //     console.log(req.query)
-    //     dBPool.query('SELECT * FROM Sample', (error, results, fields) => {
-    //         console.log({results})
-    //         res.render('response3.ejs', {teams: results, headers: fields.map((field) => field.name)});
-    //     })
-    // },
     response4: (req, res) => {
         let { "Player-1-res": p1, "Player-2-res": p2 } = req.body;
         if(p1 === undefined || p2 === undefined) {

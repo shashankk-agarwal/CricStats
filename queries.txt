@@ -96,3 +96,22 @@ SELECT FT1.season as Season, FT1.bowler as Bowler1, FT1.team as Team1, FT1.Innin
 
 Q9
 SELECT season as Season, striker as Batter, striker_attr as BatterAttr, any_value(batsman_team) as BatterTeam, bowler as Bowler, bowler_attr as BowlerAttr, any_value(bowler_team) as BowlerTeam, SUM(runs_scored) AS RunsScored, SUM(IsNotExtraBall) AS BallsFaced, SUM(BowlerWicket) AS Dismissals,  SUM(runs_scored)*100/SUM(IsNotExtraBall) AS StrikeRate FROM  (SELECT T2.season, T5.player_name as striker, T5.batting_hand as striker_attr, T3.team_name AS batsman_team, T6.player_name as bowler, T6.bowling_skill as bowler_attr, T4.team_name AS bowler_team, runs_scored, bowler_extras = 0 AS IsNotExtraBall, bowler_wicket AS BowlerWicket FROM balls as T1 INNER JOIN matches as T2 inner join teams as T3 inner join teams as T4 inner join players as T5 inner join players as T6 ON T1.match_id = T2.match_id and T3.team_id = T1.team_batting and T4.team_id = T1.team_bowling and T5.player_id = T1.striker and T6.player_id = T1.bowler AND T1.bowler = 194 AND T1.striker = 20) AS F3 GROUP BY season ORDER BY season;
+
+SELECT player_name as Batter, SUM(runs_scored) as RunsScored FROM balls inner join players on balls.striker = players.player_id GROUP BY striker ORDER BY RunsScored DESC LIMIT 10;
+
+SELECT player_name as Batter, SUM(runs_scored) as RunsScored, SUM(runs_scored)*100/COUNT(bowler_extras) as StrikeRate FROM (SELECT player_name, runs_scored, bowler_extras FROM balls inner join players on balls.striker = players.player_id WHERE bowler_extras = 0) as T1 GROUP BY player_name HAVING COUNT(bowler_extras) >= 500 ORDER BY StrikeRate DESC LIMIT 10;
+
+SELECT player_name as Bowler, SUM(bowler_wicket) as WicketsTaken FROM (SELECT player_name, bowler_wicket FROM balls inner join players on balls.bowler = players.player_id) as T1 GROUP BY player_name ORDER BY WicketsTaken DESC LIMIT 10;
+
+SELECT player_name as Bowler, BallsBowled, (RunsGiven*6)/BallsBowled as Economy FROM 
+(SELECT bowler, player_name, SUM(runs_scored) + SUM(bowler_extras) as RunsGiven FROM (SELECT bowler, player_name, runs_scored, bowler_extras FROM balls inner join players on balls.bowler = players.player_id) as T1 GROUP BY bowler) as F1 INNER JOIN 
+(SELECT bowler, COUNT(*) as BallsBowled FROM (SELECT bowler, ball_id FROM balls WHERE bowler_extras = 0) as T1 GROUP BY bowler HAVING BallsBowled >= 500) AS F2 ON F1.bowler = F2.bowler ORDER BY Economy LIMIT 10;
+
+SELECT P1.season as Season, P3.champion as Winner, P3.runnerup as RunnerUp, P1.player_name AS OrangeCap, P1.RunsScored AS Runs, P2.player_name AS PurpleCap, P2.WicketsTaken AS Wickets FROM
+(SELECT * FROM 
+(SELECT season, striker as batsman, player_name, SUM(runs_scored) AS RunsScored FROM (SELECT T2.season, T1.striker, T3.player_name, T1.runs_scored FROM balls as T1 INNER JOIN matches as T2 inner join players as T3 ON T1.match_id = T2.match_id and T1.striker = T3.player_id) AS T3 GROUP BY season, batsman) AS F1 
+WHERE (season, RunsScored) IN (SELECT season, MAX(RunsScored) FROM (SELECT season, striker, SUM(runs_scored) AS RunsScored FROM (SELECT T2.season, T1.striker, T1.runs_scored FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id) AS T3 GROUP BY season, striker) AS F1 GROUP BY season)) AS P1 INNER JOIN 
+(SELECT * FROM 
+(SELECT season, bowler, player_name, SUM(bowler_wicket) AS WicketsTaken FROM (SELECT T2.season, T1.bowler, T3.player_name, T1.bowler_wicket FROM balls as T1 INNER JOIN matches as T2 inner join players as T3 ON T1.match_id = T2.match_id AND T1.bowler = T3.player_id) AS T3 GROUP BY season, bowler) AS F1 
+WHERE (season, WicketsTaken) IN (SELECT season, MAX(WicketsTaken) FROM (SELECT season, bowler, SUM(bowler_wicket) AS WicketsTaken FROM (SELECT T2.season, T1.bowler, T1.bowler_wicket FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id) AS T3 GROUP BY season, bowler) AS F1 GROUP BY season)) AS P2 INNER JOIN 
+(SELECT T1.season, match_winner AS champion, CASE WHEN team_name_1 = match_winner THEN team_name_2 ELSE team_name_1 END AS runnerup FROM (SELECT season, MAX(match_id) AS final_id FROM matches GROUP BY season) AS T1 INNER JOIN matches ON matches.season = T1.season AND matches.match_id = T1.final_id) AS P3 ON P1.season = P2.season AND P2.season = P3.season ORDER BY season;

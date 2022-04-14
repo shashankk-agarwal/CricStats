@@ -12,25 +12,37 @@
 </head>
 <body>
     <%- include('partials/header', {home}) %>
-    <div class="container mt-5">
+    <div class="container mt-1">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-1 text-center">
+            <img src="http://localhost:3000/images/<%= img %>.jpg" class="rounded mx-auto d-block img-fluid h-20">
+            </div>
+            <div class="col-5">
+            <h4 class="text-center"><%= String(name) %></h4>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
         <script>
             $(document).ready(() => {
-                $('#players-tab').DataTable();
+                $('#stats-tab').DataTable();
             } );
         </script>
-        <table id="players-tab" class="table m-4 text-center table-bordered" style="width:100%">
+        <table id="stats-tab" class="table m-4 text-center table-bordered" style="width:100%">
             <thead>
-                <tr>
+                <tr class="table-danger">
+                    <th>#</th>
                     <% headers.forEach(header => { %>
-                        <th><%= String(header) %> </th>
+                        <th><%= String(header) %></th>
                     <% }) %>
                 </tr>
             </thead>
             <tbody>
-                <% players.forEach(player => { %>
+                <% stats.forEach((team, i) => { %>
                     <tr>
-                        <% Object.keys(player).forEach(field => { %>
-                            <td><%= String(player[field]) %> </td>
+                        <th><%= String(i + 1)%></th>
+                        <% Object.keys(team).forEach(field => { %>
+                            <td><%= String(team[field]) %></td>
                         <% }) %>
                     </tr>
                 <% }) %>
@@ -45,9 +57,13 @@
         </table>
     </div>
     <style>
+        .paginate_button > a{
+            color: black!important;
+        }
         .paginate_button.active > a {
-            background-color: gray!important;
-            border-color: gray!important;
+            background-color: red!important;
+            border-color: red!important;
+            color: white!important;
         }
     </style>
     <!-- <%- include('partials/footer') %> -->

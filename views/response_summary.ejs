@@ -1,0 +1,36 @@
+<%- include('partials/head') %>
+<body>
+    <%- include('partials/header', {home}) %>
+    <br>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-1 text-center">
+            <img src="http://localhost:3000/images/<%= img %>.jpg" class="rounded mx-auto d-block img-fluid h-20">
+            </div>
+            <div class="col-4">
+            <h4 class="text-center">Seasons Reports</h4>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5 col-15">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr class="table-danger">
+                    <% Object.keys(stats[0]).forEach(key => { %>
+                        <th scope="col"><%= String(key) %> </th>
+                    <% }) %>
+                </tr>
+            </thead>
+            <tbody>
+                <% stats.forEach(stat => { %>
+                    <tr>
+                    <% Object.keys(stat).forEach(key => { %>
+                            <td><%= String(stat[key]) %> </td>
+                    <% }) %>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <!-- <%- include('partials/footer') %> -->
+</body>
