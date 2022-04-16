@@ -1,0 +1,16 @@
+<%- include('partials/head') %>
+<body>
+    <%- include('partials/header', {home: String(home)}) %>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-5 m-5 text-center">
+            <img src="http://localhost:3000/images/oops.jpg" class="rounded mx-auto d-block img-fluid">
+            </div>
+            <div class="col-5 m-5">
+                <h3 class="text-center"><%= String(msg) %></h3>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- <%- include('partials/footer') %> -->
+</body>

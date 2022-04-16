@@ -32,11 +32,11 @@ module.exports = {
             WHERE (season, WicketsTaken) IN (SELECT season, MAX(WicketsTaken) FROM (SELECT season, bowler, SUM(bowler_wicket) AS WicketsTaken FROM (SELECT T2.season, T1.bowler, T1.bowler_wicket FROM balls as T1 INNER JOIN matches as T2 ON T1.match_id = T2.match_id) AS T3 GROUP BY season, bowler) AS F1 GROUP BY season)) AS P2 INNER JOIN 
             (SELECT T1.season, match_winner AS champion, CASE WHEN team_name_1 = match_winner THEN team_name_2 ELSE team_name_1 END AS runnerup FROM (SELECT season, MAX(match_id) AS final_id FROM matches GROUP BY season) AS T1 INNER JOIN matches ON matches.season = T1.season AND matches.match_id = T1.final_id) AS P3 ON P1.season = P2.season AND P2.season = P3.season ORDER BY season;`, (error, results, fields) => {
                 if(error) {
-                    res.send(error)
+                    res.render("msg.ejs", {msg: error, home: 5})
                     return
                 }
                 if(results.length === 0) {
-                    res.send("No relevant results")
+                    res.render("msg.ejs", {msg: "No relevant results", home: 5})
                     return
                 }
                 const stats = results
